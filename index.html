@@ -31,7 +31,22 @@
  }
  body{ padding-top: var(--safe-top); padding-bottom: var(--safe-bottom); }
  .num{ font-variant-numeric: tabular-nums; }
- #app{ max-width:520px; margin:0 auto; padding:0 18px 40px; }
+ #app{ max-width:520px; margin:0 auto; padding:0 18px calc(90px + var(--safe-bottom)); }
+
+
+ /* Tab bar */
+ .tabbar{ position:fixed; bottom:0; left:0; right:0; background:rgba(250,250,247,0.92); backdrop-filter:blur(12px);
+   border-top:1px solid var(--border); display:flex; padding:8px 12px calc(8px + var(--safe-bottom));
+   max-width:520px; margin:0 auto; z-index:40; }
+ .tabbtn{ flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:none;
+   color:var(--muted); font-size:11px; font-weight:600; padding:6px 0; font-family:inherit; }
+ .tabbtn.active{ color:var(--accent); }
+
+
+ /* Filter chip on transactions tab */
+ .filterchip{ display:flex; align-items:center; justify-content:space-between; background:var(--accent-soft); color:var(--accent);
+   font-size:12.5px; font-weight:700; padding:8px 14px; border-radius:100px; margin-bottom:12px; }
+ .filterchip button{ background:none; border:none; color:var(--accent); font-size:13px; font-weight:700; padding:0 0 0 8px; }
 
 
  /* Header */
@@ -172,6 +187,18 @@
  </div>
 
 
+ <div class="tabbar">
+   <button class="tabbtn" data-tab="overview" onclick="activeTab='overview'; render();">
+     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+     <span>Overview</span>
+   </button>
+   <button class="tabbtn" data-tab="transactions" onclick="activeTab='transactions'; render();">
+     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="14" y2="17"/></svg>
+     <span>Transactions</span>
+   </button>
+ </div>
+
+
  <div id="colorPickerOverlay" class="colorpicker-overlay" onclick="if(event.target===this) closeColorPicker()">
    <div class="colorpicker-sheet">
      <div class="colorpicker-title">Choose a color</div>
@@ -191,6 +218,7 @@ let selectedMonthKey = null;
 let selectedCategory = null;
 let searchQuery = '';
 let monthlyBudget = null;
+let activeTab = 'overview';
 const INVESTMENT_KEY = 'investment';
 
 
@@ -376,12 +404,7 @@ function render(){
  });
 
 
- content.innerHTML = `
-   <div class="pillrow">
-     ${monthKeys.map(k => `<div class="pill ${k===selectedMonthKey?'active':''}" data-month="${k}">${monthLabel(k)}</div>`).join('')}
-   </div>
-
-
+ const overviewHTML = `
    <div class="hero">
      <div class="hero-chips">
        <div class="hero-chip">
@@ -472,32 +495,45 @@ function render(){
        `).join('')}
      </div>
    </div>
-
-
-   <div class="section">
-     <h2>Transactions</h2>
-     <div class="searchbar">
-       <input type="text" id="searchInput" placeholder="Search notes or category" value="${searchQuery}">
-     </div>
-     ${Object.keys(grouped).length === 0 ? '<div class="empty">No matching transactions.</div>' :
-       Object.entries(grouped).map(([dateStr, items]) => `
-         <div class="daygroup">
-           <div class="daylabel">${dayLabel(new Date(dateStr))}</div>
-           ${items.map(r => `
-             <div class="txn">
-               ${txnBadge(r.category, r.category.toLowerCase()==='investment')}
-               <div class="txn-main">
-                 <div class="txn-note">${r.note || r.category}</div>
-                 <div class="txn-sub">${r.category} · ${r.method}</div>
-               </div>
-               <div class="txn-amt num">${fmtINR(r.amount)}</div>
-             </div>
-           `).join('')}
-         </div>
-       `).join('')
-     }
-   </div>
  `;
+
+
+ const transactionsHTML = `
+   <div class="searchbar">
+     <input type="text" id="searchInput" placeholder="Search notes or category" value="${searchQuery}">
+   </div>
+   ${selectedCategory ? `<div class="filterchip">Filtering: ${selectedCategory} <button onclick="selectedCategory=null; render();">✕</button></div>` : ''}
+   ${Object.keys(grouped).length === 0 ? '<div class="empty">No matching transactions.</div>' :
+     Object.entries(grouped).map(([dateStr, items]) => `
+       <div class="daygroup">
+         <div class="daylabel">${dayLabel(new Date(dateStr))}</div>
+         ${items.map(r => `
+           <div class="txn">
+             ${txnBadge(r.category, r.category.toLowerCase()==='investment')}
+             <div class="txn-main">
+               <div class="txn-note">${r.note || r.category}</div>
+               <div class="txn-sub">${r.category} · ${r.method}</div>
+             </div>
+             <div class="txn-amt num">${fmtINR(r.amount)}</div>
+           </div>
+         `).join('')}
+       </div>
+     `).join('')
+   }
+ `;
+
+
+ content.innerHTML = `
+   <div class="pillrow">
+     ${monthKeys.map(k => `<div class="pill ${k===selectedMonthKey?'active':''}" data-month="${k}">${monthLabel(k)}</div>`).join('')}
+   </div>
+   ${activeTab === 'overview' ? overviewHTML : transactionsHTML}
+ `;
+
+
+ document.querySelectorAll('.tabbtn').forEach(el => {
+   el.classList.toggle('active', el.dataset.tab === activeTab);
+ });
 
 
  // wire up interactions
@@ -512,8 +548,10 @@ function render(){
  const searchInput = document.getElementById('searchInput');
  if(searchInput){
    searchInput.addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); render(); });
-   searchInput.focus({preventScroll:true});
-   searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
+   if(searchQuery){
+     searchInput.focus({preventScroll:true});
+     searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
+   }
  }
 
 
@@ -638,5 +676,4 @@ refreshData();
 </script>
 </body>
 </html>
-
 
