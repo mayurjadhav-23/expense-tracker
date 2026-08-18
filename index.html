@@ -8,164 +8,183 @@
 <meta name="mobile-web-app-capable" content="yes">
 <title>Expense Tracker</title>
 <style>
-  :root{
-    --bg:#FAFAF7;
-    --card:#FFFFFF;
-    --border:#EAE7DE;
-    --ink:#1C1C1E;
-    --muted:#8E8E93;
-    --accent:#1B4332;
-    --accent-soft:#EAF2ED;
-    --accent-2:#2D6A4F;
-    --danger:#B23A48;
-    --invest:#3A5A78;
-    --invest-soft:#EAF0F5;
-    --radius:20px;
-    --safe-top: env(safe-area-inset-top, 0px);
-    --safe-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{margin:0; padding:0; background:var(--bg); color:var(--ink);
-    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-    overflow-x:hidden;
-  }
-  body{ padding-top: var(--safe-top); padding-bottom: var(--safe-bottom); }
-  .num{ font-variant-numeric: tabular-nums; }
-  #app{ max-width:520px; margin:0 auto; padding:0 18px 40px; }
+ :root{
+   --bg:#FAFAF7;
+   --card:#FFFFFF;
+   --border:#EAE7DE;
+   --ink:#1C1C1E;
+   --muted:#8E8E93;
+   --accent:#1B4332;
+   --accent-soft:#EAF2ED;
+   --accent-2:#2D6A4F;
+   --danger:#B23A48;
+   --invest:#3A5A78;
+   --invest-soft:#EAF0F5;
+   --radius:20px;
+   --safe-top: env(safe-area-inset-top, 0px);
+   --safe-bottom: env(safe-area-inset-bottom, 0px);
+ }
+ *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+ html,body{margin:0; padding:0; background:var(--bg); color:var(--ink);
+   font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+   overflow-x:hidden;
+ }
+ body{ padding-top: var(--safe-top); padding-bottom: var(--safe-bottom); }
+ .num{ font-variant-numeric: tabular-nums; }
+ #app{ max-width:520px; margin:0 auto; padding:0 18px 40px; }
 
-  /* Header */
-  header{ display:flex; align-items:baseline; justify-content:space-between; padding:22px 4px 14px; }
-  header h1{ font-size:22px; font-weight:700; letter-spacing:-0.3px; margin:0; }
-  header .refresh{ font-size:12px; color:var(--muted); background:none; border:none; padding:6px 0; }
 
-  /* Month pills */
-  .pillrow{ display:flex; gap:8px; overflow-x:auto; padding:4px 0 18px; scrollbar-width:none; }
-  .pillrow::-webkit-scrollbar{ display:none; }
-  .pill{ flex:0 0 auto; padding:8px 16px; border-radius:100px; background:var(--card); border:1px solid var(--border);
-    font-size:13px; font-weight:600; color:var(--muted); white-space:nowrap; }
-  .pill.active{ background:var(--accent); color:#fff; border-color:var(--accent); }
+ /* Header */
+ header{ display:flex; align-items:baseline; justify-content:space-between; padding:22px 4px 14px; }
+ header h1{ font-size:22px; font-weight:700; letter-spacing:-0.3px; margin:0; }
+ header .refresh{ font-size:12px; color:var(--muted); background:none; border:none; padding:6px 0; }
 
-  /* Hero */
-  .hero{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin-bottom:14px;
-    display:flex; align-items:center; gap:18px; }
-  .hero-ring{ flex:0 0 auto; }
-  .hero-text{ flex:1; min-width:0; }
-  .hero-label{ font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
-  .hero-amount{ font-size:34px; font-weight:800; letter-spacing:-0.5px; line-height:1.05; }
-  .hero-delta{ font-size:13px; margin-top:6px; font-weight:600; }
-  .hero-delta.up{ color:var(--danger); }
-  .hero-delta.down{ color:var(--accent-2); }
-  .hero-delta.flat{ color:var(--muted); }
-  .hero-breakdown{ font-size:12.5px; color:var(--muted); font-weight:600; margin-top:4px; }
-  .hero-breakdown .bd-invest{ color:var(--invest); }
 
-  /* Stat row */
-  .statrow{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
-  .stat{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; }
-  .stat-label{ font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:4px;}
-  .stat-value{ font-size:20px; font-weight:700; letter-spacing:-0.3px; }
+ /* Month pills */
+ .pillrow{ display:flex; gap:8px; overflow-x:auto; padding:4px 0 18px; scrollbar-width:none; }
+ .pillrow::-webkit-scrollbar{ display:none; }
+ .pill{ flex:0 0 auto; padding:8px 16px; border-radius:100px; background:var(--card); border:1px solid var(--border);
+   font-size:13px; font-weight:600; color:var(--muted); white-space:nowrap; }
+ .pill.active{ background:var(--accent); color:#fff; border-color:var(--accent); }
 
-  /* Section */
-  .section{ margin:26px 0 14px; }
-  .section h2{ font-size:15px; font-weight:700; margin:0 0 10px 2px; letter-spacing:-0.2px; }
 
-  /* Category strip */
-  .catstrip{ display:flex; gap:10px; overflow-x:auto; padding:2px 0 6px; scrollbar-width:none; }
-  .catstrip::-webkit-scrollbar{ display:none; }
-  .catcard{ flex:0 0 auto; width:132px; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:14px; cursor:pointer; transition:transform .15s; }
-  .catcard.active{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
-  .catcard:active{ transform:scale(0.97); }
-  .catdot{ width:10px; height:10px; border-radius:50%; margin-bottom:10px; }
-  .catname{ font-size:12px; color:var(--muted); font-weight:600; margin-bottom:4px; }
-  .catamt{ font-size:17px; font-weight:700; letter-spacing:-0.3px; }
-  .catbar{ height:4px; border-radius:4px; background:var(--border); margin-top:10px; overflow:hidden; }
-  .catbar-fill{ height:100%; border-radius:4px; }
+ /* Hero */
+ .hero{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:22px 20px; margin-bottom:14px; }
+ .hero-chips{ display:flex; gap:10px; margin-bottom:18px; }
+ .hero-chip{ flex:1; display:flex; align-items:center; gap:10px; background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:10px 12px; }
+ .chip-icon{ width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+ .chip-label{ font-size:10.5px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.3px; }
+ .chip-amt{ font-size:14.5px; font-weight:700; letter-spacing:-0.2px; }
+ .hero-ring-wrap{ display:flex; justify-content:center; padding:4px 0 6px; }
+ .hero-delta{ font-size:13px; margin-top:12px; font-weight:600; text-align:center; }
+ .hero-delta.up{ color:var(--danger); }
+ .hero-delta.down{ color:var(--accent-2); }
+ .hero-delta.flat{ color:var(--muted); }
 
-  /* Trend chart */
-  .chartwrap{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px 14px 8px; }
-  canvas{ width:100% !important; }
 
-  /* Methods */
-  .methodrow{ display:flex; flex-direction:column; gap:10px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; }
-  .method-item{ display:flex; align-items:center; gap:10px; }
-  .method-name{ flex:0 0 96px; font-size:13px; font-weight:600; color:var(--muted); }
-  .method-track{ flex:1; height:8px; background:var(--accent-soft); border-radius:8px; overflow:hidden; }
-  .method-fill{ height:100%; background:var(--accent); border-radius:8px; }
-  .method-amt{ flex:0 0 auto; font-size:13px; font-weight:700; width:64px; text-align:right; }
+ /* Stat row */
+ .statrow{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+ .stat{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; }
+ .stat-label{ font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:4px;}
+ .stat-value{ font-size:20px; font-weight:700; letter-spacing:-0.3px; }
 
-  /* Search */
-  .searchbar{ display:flex; align-items:center; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:10px 14px; margin-bottom:10px; }
-  .searchbar input{ border:none; outline:none; background:none; flex:1; font-size:15px; color:var(--ink); font-family:inherit; }
-  .searchbar input::placeholder{ color:var(--muted); }
 
-  /* Transaction list */
-  .daygroup{ margin-bottom:4px; }
-  .daylabel{ font-size:12px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; margin:16px 2px 6px; }
-  .txn{ display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px 14px; margin-bottom:8px; }
-  .txn-dot{ width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
-  .txn-main{ flex:1; min-width:0; }
-  .txn-note{ font-size:14.5px; font-weight:600; letter-spacing:-0.1px; }
-  .txn-sub{ font-size:12px; color:var(--muted); margin-top:2px; }
-  .txn-amt{ font-size:15px; font-weight:700; letter-spacing:-0.2px; white-space:nowrap; }
+ /* Section */
+ .section{ margin:26px 0 14px; }
+ .section h2{ font-size:15px; font-weight:700; margin:0 0 10px 2px; letter-spacing:-0.2px; }
 
-  .empty{ text-align:center; color:var(--muted); font-size:14px; padding:40px 20px; }
-  .loading{ text-align:center; color:var(--muted); font-size:14px; padding:60px 20px; }
-  .errbox{ background:#FBEEEF; border:1px solid #E8C4C8; color:var(--danger); border-radius:14px; padding:14px; font-size:13px; margin:20px 0; }
 
-  /* Budget bar */
-  .budgetbar{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:14px 16px; margin-bottom:14px; }
-  .budgetbar-top{ display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:700; margin-bottom:8px; }
-  .editbtn{ background:none; border:none; color:var(--accent); font-size:12px; font-weight:700; padding:2px 6px; }
-  .budgetbar-track{ height:8px; background:var(--accent-soft); border-radius:8px; overflow:hidden; }
-  .budgetbar-fill{ height:100%; background:var(--accent); border-radius:8px; }
-  .budgetbar-fill.over{ background:var(--danger); }
-  .budgetbar-sub{ font-size:12px; color:var(--muted); margin-top:6px; font-weight:600; }
-  .budgetbar-sub.over{ color:var(--danger); }
-  .budgetbar.nobudget{ display:flex; justify-content:center; }
-  .nobudget-row{ display:flex; justify-content:center; }
-  .setbudgetbtn{ background:none; border:none; color:var(--accent); font-size:13px; font-weight:700; padding:2px; }
+ /* Category donut + legend */
+ .donutwrap{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px; }
+ .donutchart{ display:flex; justify-content:center; margin-bottom:18px; }
+ .catlegend{ display:flex; flex-direction:column; gap:2px; }
+ .catrow{ display:flex; align-items:center; gap:12px; padding:10px 4px; border-radius:12px; cursor:pointer; }
+ .catrow.active{ background:var(--accent-soft); }
+ .catrow:active{ opacity:0.7; }
+ .catrow-badge{ width:30px; height:30px; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
+ .catrow-main{ flex:1; min-width:0; }
+ .catrow-name{ font-size:13.5px; font-weight:600; }
+ .catrow-track{ height:4px; border-radius:4px; background:var(--border); margin-top:6px; overflow:hidden; }
+ .catrow-fill{ height:100%; border-radius:4px; }
+ .catrow-amt{ font-size:13.5px; font-weight:700; letter-spacing:-0.2px; flex:0 0 auto; }
 
-  /* Investment card */
-  .investcard{ background:var(--invest-soft); border:1px solid #D6E2EC; border-radius:16px; padding:16px; display:flex; justify-content:space-between; align-items:center; }
-  .invest-label{ font-size:11px; color:var(--invest); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:4px; }
-  .invest-amt{ font-size:22px; font-weight:800; letter-spacing:-0.3px; color:var(--invest); }
-  .invest-count{ font-size:12px; color:var(--invest); font-weight:600; opacity:0.75; }
 
-  /* Color picker */
-  .colorpicker-overlay{ display:none; position:fixed; inset:0; background:rgba(28,28,30,0.35); align-items:flex-end; justify-content:center; z-index:50; }
-  .colorpicker-overlay.show{ display:flex; }
-  .colorpicker-sheet{ background:var(--bg); border-radius:20px 20px 0 0; padding:20px 20px calc(20px + var(--safe-bottom)); width:100%; max-width:520px; }
-  .colorpicker-title{ font-size:14px; font-weight:700; margin-bottom:14px; text-align:center; }
-  .colorpicker-swatches{ display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin-bottom:16px; }
-  .swatch{ width:100%; aspect-ratio:1; border-radius:50%; border:2px solid transparent; padding:0; }
-  .swatch.selected{ border-color:var(--ink); }
-  .colorpicker-close{ width:100%; padding:12px; border:none; border-radius:12px; background:var(--accent); color:#fff; font-size:14px; font-weight:700; }
+ /* Trend chart */
+ canvas{ width:100% !important; }
 
-  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+
+ /* Methods */
+ .methodrow{ display:flex; flex-direction:column; gap:10px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; }
+ .method-item{ display:flex; align-items:center; gap:10px; }
+ .method-name{ flex:0 0 96px; font-size:13px; font-weight:600; color:var(--muted); }
+ .method-track{ flex:1; height:8px; background:var(--accent-soft); border-radius:8px; overflow:hidden; }
+ .method-fill{ height:100%; background:var(--accent); border-radius:8px; }
+ .method-amt{ flex:0 0 auto; font-size:13px; font-weight:700; width:64px; text-align:right; }
+
+
+ /* Search */
+ .searchbar{ display:flex; align-items:center; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:10px 14px; margin-bottom:10px; }
+ .searchbar input{ border:none; outline:none; background:none; flex:1; font-size:15px; color:var(--ink); font-family:inherit; }
+ .searchbar input::placeholder{ color:var(--muted); }
+
+
+ /* Transaction list */
+ .daygroup{ margin-bottom:4px; }
+ .daylabel{ font-size:12px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; margin:16px 2px 6px; }
+ .txn{ display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:10px 14px; margin-bottom:8px; }
+ .txn-badge{ width:36px; height:36px; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
+ .txn-main{ flex:1; min-width:0; }
+ .txn-note{ font-size:14.5px; font-weight:600; letter-spacing:-0.1px; }
+ .txn-sub{ font-size:12px; color:var(--muted); margin-top:2px; }
+ .txn-amt{ font-size:15px; font-weight:700; letter-spacing:-0.2px; white-space:nowrap; }
+
+
+ .empty{ text-align:center; color:var(--muted); font-size:14px; padding:40px 20px; }
+ .loading{ text-align:center; color:var(--muted); font-size:14px; padding:60px 20px; }
+ .errbox{ background:#FBEEEF; border:1px solid #E8C4C8; color:var(--danger); border-radius:14px; padding:14px; font-size:13px; margin:20px 0; }
+
+
+ /* Budget bar */
+ .budgetbar{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:14px 16px; margin-bottom:14px; }
+ .budgetbar-top{ display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:700; margin-bottom:8px; }
+ .editbtn{ background:none; border:none; color:var(--accent); font-size:12px; font-weight:700; padding:2px 6px; }
+ .budgetbar-track{ height:8px; background:var(--accent-soft); border-radius:8px; overflow:hidden; }
+ .budgetbar-fill{ height:100%; background:var(--accent); border-radius:8px; }
+ .budgetbar-fill.over{ background:var(--danger); }
+ .budgetbar-sub{ font-size:12px; color:var(--muted); margin-top:6px; font-weight:600; }
+ .budgetbar-sub.over{ color:var(--danger); }
+ .budgetbar.nobudget{ display:flex; justify-content:center; }
+ .nobudget-row{ display:flex; justify-content:center; }
+ .setbudgetbtn{ background:none; border:none; color:var(--accent); font-size:13px; font-weight:700; padding:2px; }
+
+
+ /* Investment card */
+ .investcard{ background:var(--invest-soft); border:1px solid #D6E2EC; border-radius:16px; padding:16px; display:flex; justify-content:space-between; align-items:center; }
+ .invest-label{ font-size:11px; color:var(--invest); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:4px; }
+ .invest-amt{ font-size:22px; font-weight:800; letter-spacing:-0.3px; color:var(--invest); }
+ .invest-count{ font-size:12px; color:var(--invest); font-weight:600; opacity:0.75; }
+
+
+ /* Color picker */
+ .colorpicker-overlay{ display:none; position:fixed; inset:0; background:rgba(28,28,30,0.35); align-items:flex-end; justify-content:center; z-index:50; }
+ .colorpicker-overlay.show{ display:flex; }
+ .colorpicker-sheet{ background:var(--bg); border-radius:20px 20px 0 0; padding:20px 20px calc(20px + var(--safe-bottom)); width:100%; max-width:520px; }
+ .colorpicker-title{ font-size:14px; font-weight:700; margin-bottom:14px; text-align:center; }
+ .colorpicker-swatches{ display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin-bottom:16px; }
+ .swatch{ width:100%; aspect-ratio:1; border-radius:50%; border:2px solid transparent; padding:0; }
+ .swatch.selected{ border-color:var(--ink); }
+ .colorpicker-close{ width:100%; padding:12px; border:none; border-radius:12px; background:var(--accent); color:#fff; font-size:14px; font-weight:700; }
+
+
+ @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
 </style>
 </head>
 <body>
 <div id="app">
-  <header>
-    <h1>Expenses</h1>
-    <button class="refresh" onclick="refreshData()" id="refreshBtn">Updated just now</button>
-  </header>
+ <header>
+   <h1>Expenses</h1>
+   <button class="refresh" onclick="refreshData()" id="refreshBtn">Updated just now</button>
+ </header>
 
-  <div id="content">
-    <div class="loading">Loading your data…</div>
-  </div>
 
-  <div id="colorPickerOverlay" class="colorpicker-overlay" onclick="if(event.target===this) closeColorPicker()">
-    <div class="colorpicker-sheet">
-      <div class="colorpicker-title">Choose a color</div>
-      <div class="colorpicker-swatches" id="colorSwatches"></div>
-      <button class="colorpicker-close" onclick="closeColorPicker()">Done</button>
-    </div>
-  </div>
+ <div id="content">
+   <div class="loading">Loading your data…</div>
+ </div>
+
+
+ <div id="colorPickerOverlay" class="colorpicker-overlay" onclick="if(event.target===this) closeColorPicker()">
+   <div class="colorpicker-sheet">
+     <div class="colorpicker-title">Choose a color</div>
+     <div class="colorpicker-swatches" id="colorSwatches"></div>
+     <button class="colorpicker-close" onclick="closeColorPicker()">Done</button>
+   </div>
+ </div>
 </div>
+
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw3anGInfuc-QhdiiSMcI9Msyj7U-EWo5pjF3rCk8nQaagSZiYxxdpb1FgbymperGkJlw/exec';
+
 
 let rawRows = [];
 let selectedMonthKey = null;
@@ -174,396 +193,450 @@ let searchQuery = '';
 let monthlyBudget = null;
 const INVESTMENT_KEY = 'investment';
 
+
 const CAT_PALETTE = ['#1B4332','#2D6A4F','#40916C','#52796F','#74A892','#95D5B2','#6B8F71','#3A5A40'];
 const MUTED_PALETTE = ['#1B4332','#2D6A4F','#40916C','#52796F','#74A892','#3A5A78','#7C93A6','#8C7355','#9C8AA5','#A66A5B','#8C8577','#6B7A99'];
 const catColorMap = {};
 let savedCategoryColors = {};
 
+
 function loadCategoryColors(){
-  try{ savedCategoryColors = JSON.parse(localStorage.getItem('categoryColors') || '{}'); }
-  catch(e){ savedCategoryColors = {}; }
+ try{ savedCategoryColors = JSON.parse(localStorage.getItem('categoryColors') || '{}'); }
+ catch(e){ savedCategoryColors = {}; }
 }
 
+
 function colorForCategory(cat){
-  if(savedCategoryColors[cat]) return savedCategoryColors[cat];
-  if(!catColorMap[cat]){
-    const idx = Object.keys(catColorMap).length % CAT_PALETTE.length;
-    catColorMap[cat] = CAT_PALETTE[idx];
-  }
-  return catColorMap[cat];
+ if(savedCategoryColors[cat]) return savedCategoryColors[cat];
+ if(!catColorMap[cat]){
+   const idx = Object.keys(catColorMap).length % CAT_PALETTE.length;
+   catColorMap[cat] = CAT_PALETTE[idx];
+ }
+ return catColorMap[cat];
 }
+
 
 let colorPickerTarget = null;
 function openColorPicker(cat){
-  colorPickerTarget = cat;
-  const current = colorForCategory(cat);
-  const swatchesEl = document.getElementById('colorSwatches');
-  swatchesEl.innerHTML = MUTED_PALETTE.map(c =>
-    `<button class="swatch ${c===current?'selected':''}" style="background:${c}" onclick="chooseColor('${c}')" aria-label="color ${c}"></button>`
-  ).join('');
-  document.getElementById('colorPickerOverlay').classList.add('show');
+ colorPickerTarget = cat;
+ const current = colorForCategory(cat);
+ const swatchesEl = document.getElementById('colorSwatches');
+ swatchesEl.innerHTML = MUTED_PALETTE.map(c =>
+   `<button class="swatch ${c===current?'selected':''}" style="background:${c}" onclick="chooseColor('${c}')" aria-label="color ${c}"></button>`
+ ).join('');
+ document.getElementById('colorPickerOverlay').classList.add('show');
 }
 function chooseColor(hex){
-  if(colorPickerTarget){
-    savedCategoryColors[colorPickerTarget] = hex;
-    try{ localStorage.setItem('categoryColors', JSON.stringify(savedCategoryColors)); }catch(e){ /* non-fatal */ }
-  }
-  closeColorPicker();
-  render();
+ if(colorPickerTarget){
+   savedCategoryColors[colorPickerTarget] = hex;
+   try{ localStorage.setItem('categoryColors', JSON.stringify(savedCategoryColors)); }catch(e){ /* non-fatal */ }
+ }
+ closeColorPicker();
+ render();
 }
 function closeColorPicker(){
-  document.getElementById('colorPickerOverlay').classList.remove('show');
-  colorPickerTarget = null;
+ document.getElementById('colorPickerOverlay').classList.remove('show');
+ colorPickerTarget = null;
 }
 
+
 function fmtINR(n){
-  return '₹' + Math.round(n).toLocaleString('en-IN');
+ return '₹' + Math.round(n).toLocaleString('en-IN');
 }
 function monthKey(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0'); }
 function monthLabel(key){
-  const [y,m] = key.split('-').map(Number);
-  return new Date(y, m-1, 1).toLocaleDateString('en-IN', { month:'long', year:'numeric' });
+ const [y,m] = key.split('-').map(Number);
+ return new Date(y, m-1, 1).toLocaleDateString('en-IN', { month:'long', year:'numeric' });
 }
 function dayLabel(d){
-  const today = new Date(); const yest = new Date(); yest.setDate(today.getDate()-1);
-  if(d.toDateString() === today.toDateString()) return 'Today';
-  if(d.toDateString() === yest.toDateString()) return 'Yesterday';
-  return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year: d.getFullYear()!==today.getFullYear() ? 'numeric' : undefined });
+ const today = new Date(); const yest = new Date(); yest.setDate(today.getDate()-1);
+ if(d.toDateString() === today.toDateString()) return 'Today';
+ if(d.toDateString() === yest.toDateString()) return 'Yesterday';
+ return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year: d.getFullYear()!==today.getFullYear() ? 'numeric' : undefined });
 }
 
+
 async function loadData(){
-  const res = await fetch(SCRIPT_URL);
-  if(!res.ok) throw new Error('Network error (' + res.status + ')');
-  const json = await res.json();
-  if(!json.success) throw new Error(json.error || 'Unknown error from sheet');
-  return json.data;
+ const res = await fetch(SCRIPT_URL);
+ if(!res.ok) throw new Error('Network error (' + res.status + ')');
+ const json = await res.json();
+ if(!json.success) throw new Error(json.error || 'Unknown error from sheet');
+ return json.data;
 }
+
 
 const MONTHS = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
 function parseTimestamp(raw){
-  if(raw instanceof Date) return raw;
-  if(typeof raw !== 'string') return new Date(raw);
-  // Try native parsing first (handles ISO strings from real Date cells)
-  let d = new Date(raw);
-  if(!isNaN(d.getTime())) return d;
-  // Fallback: "6 Aug 2026 at 11:01 AM" style text
-  const m = raw.match(/(\d{1,2})\s+(\w{3,})\s+(\d{4})\s+at\s+(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-  if(m){
-    const [, day, monStr, year, hh, mm, ampm] = m;
-    const mon = MONTHS[monStr.toLowerCase().slice(0,3)];
-    let hour = parseInt(hh,10);
-    if(/pm/i.test(ampm) && hour < 12) hour += 12;
-    if(/am/i.test(ampm) && hour === 12) hour = 0;
-    return new Date(parseInt(year,10), mon, parseInt(day,10), hour, parseInt(mm,10));
-  }
-  return new Date(NaN);
+ if(raw instanceof Date) return raw;
+ if(typeof raw !== 'string') return new Date(raw);
+ // Try native parsing first (handles ISO strings from real Date cells)
+ let d = new Date(raw);
+ if(!isNaN(d.getTime())) return d;
+ // Fallback: "6 Aug 2026 at 11:01 AM" style text
+ const m = raw.match(/(\d{1,2})\s+(\w{3,})\s+(\d{4})\s+at\s+(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+ if(m){
+   const [, day, monStr, year, hh, mm, ampm] = m;
+   const mon = MONTHS[monStr.toLowerCase().slice(0,3)];
+   let hour = parseInt(hh,10);
+   if(/pm/i.test(ampm) && hour < 12) hour += 12;
+   if(/am/i.test(ampm) && hour === 12) hour = 0;
+   return new Date(parseInt(year,10), mon, parseInt(day,10), hour, parseInt(mm,10));
+ }
+ return new Date(NaN);
 }
 function parseRows(data){
-  return data.map(row => {
-    const amount = parseFloat(row['Amount']);
-    const rawDate = row['Timestamp'];
-    const date = parseTimestamp(rawDate);
-    return {
-      amount: isNaN(amount) ? null : amount,
-      category: (row['Category']||'Other').trim(),
-      note: (row['Note']||'').trim(),
-      method: (row['Payment Method']||'—').trim(),
-      date: isNaN(date.getTime()) ? null : date
-    };
-  }).filter(r => r.amount !== null && r.date !== null);
+ return data.map(row => {
+   const amount = parseFloat(row['Amount']);
+   const rawDate = row['Timestamp'];
+   const date = parseTimestamp(rawDate);
+   return {
+     amount: isNaN(amount) ? null : amount,
+     category: (row['Category']||'Other').trim(),
+     note: (row['Note']||'').trim(),
+     method: (row['Payment Method']||'—').trim(),
+     date: isNaN(date.getTime()) ? null : date
+   };
+ }).filter(r => r.amount !== null && r.date !== null);
 }
+
 
 function render(){
-  const content = document.getElementById('content');
-  if(rawRows.length === 0){
-    content.innerHTML = '<div class="empty">No transactions found yet.</div>';
-    return;
-  }
+ const content = document.getElementById('content');
+ if(rawRows.length === 0){
+   content.innerHTML = '<div class="empty">No transactions found yet.</div>';
+   return;
+ }
 
-  // Build month list, most recent first
-  const months = {};
-  rawRows.forEach(r => { const k = monthKey(r.date); months[k] = (months[k]||[]).concat(r); });
-  const monthKeys = Object.keys(months).sort().reverse();
-  if(!selectedMonthKey || !months[selectedMonthKey]) selectedMonthKey = monthKeys[0];
 
-  const thisMonthAll = months[selectedMonthKey] || [];
-  const thisInvestRows = thisMonthAll.filter(r => r.category.toLowerCase() === INVESTMENT_KEY);
-  const thisMonthRows = thisMonthAll.filter(r => r.category.toLowerCase() !== INVESTMENT_KEY);
-  const thisTotal = thisMonthRows.reduce((s,r)=>s+r.amount,0);
-  const investTotal = thisInvestRows.reduce((s,r)=>s+r.amount,0);
-  const grandTotal = thisTotal + investTotal;
+ // Build month list, most recent first
+ const months = {};
+ rawRows.forEach(r => { const k = monthKey(r.date); months[k] = (months[k]||[]).concat(r); });
+ const monthKeys = Object.keys(months).sort().reverse();
+ if(!selectedMonthKey || !months[selectedMonthKey]) selectedMonthKey = monthKeys[0];
 
-  // previous month for delta (spend only, investment excluded)
-  const idx = monthKeys.indexOf(selectedMonthKey);
-  const prevKey = monthKeys[idx+1];
-  const prevSpendRows = prevKey ? months[prevKey].filter(r => r.category.toLowerCase() !== INVESTMENT_KEY) : [];
-  const prevTotal = prevKey ? prevSpendRows.reduce((s,r)=>s+r.amount,0) : null;
-  let deltaHTML = '';
-  if(prevTotal){
-    const pct = ((thisTotal - prevTotal) / prevTotal) * 100;
-    const cls = pct > 1 ? 'up' : pct < -1 ? 'down' : 'flat';
-    const arrow = pct > 1 ? '↑' : pct < -1 ? '↓' : '→';
-    deltaHTML = `<div class="hero-delta ${cls}">${arrow} ${Math.abs(pct).toFixed(0)}% spending vs ${monthLabel(prevKey).split(' ')[0]}</div>`;
-  }
 
-  // average monthly spend, investment excluded, used as ring fallback when no budget is set
-  const allMonthTotals = monthKeys.map(k => months[k].filter(r => r.category.toLowerCase() !== INVESTMENT_KEY).reduce((s,r)=>s+r.amount,0));
-  const avgMonthly = allMonthTotals.reduce((a,b)=>a+b,0) / allMonthTotals.length;
-  const ringBase = (monthlyBudget && monthlyBudget > 0) ? monthlyBudget : avgMonthly;
-  const ringPct = ringBase > 0 ? Math.min(thisTotal / ringBase, 1) : 0;
+ const thisMonthAll = months[selectedMonthKey] || [];
+ const thisInvestRows = thisMonthAll.filter(r => r.category.toLowerCase() === INVESTMENT_KEY);
+ const thisMonthRows = thisMonthAll.filter(r => r.category.toLowerCase() !== INVESTMENT_KEY);
+ const thisTotal = thisMonthRows.reduce((s,r)=>s+r.amount,0);
+ const investTotal = thisInvestRows.reduce((s,r)=>s+r.amount,0);
+ const grandTotal = thisTotal + investTotal;
 
-  // categories for selected month
-  const catTotals = {};
-  thisMonthRows.forEach(r => { catTotals[r.category] = (catTotals[r.category]||0) + r.amount; });
-  const catList = Object.entries(catTotals).sort((a,b)=>b[1]-a[1]);
-  const maxCat = catList.length ? catList[0][1] : 1;
 
-  // methods for selected month
-  const methodTotals = {};
-  thisMonthRows.forEach(r => { methodTotals[r.method] = (methodTotals[r.method]||0) + r.amount; });
-  const methodList = Object.entries(methodTotals).sort((a,b)=>b[1]-a[1]);
-  const maxMethod = methodList.length ? methodList[0][1] : 1;
+ // previous month for delta (spend only, investment excluded)
+ const idx = monthKeys.indexOf(selectedMonthKey);
+ const prevKey = monthKeys[idx+1];
+ const prevSpendRows = prevKey ? months[prevKey].filter(r => r.category.toLowerCase() !== INVESTMENT_KEY) : [];
+ const prevTotal = prevKey ? prevSpendRows.reduce((s,r)=>s+r.amount,0) : null;
+ let deltaHTML = '';
+ if(prevTotal){
+   const pct = ((thisTotal - prevTotal) / prevTotal) * 100;
+   const cls = pct > 1 ? 'up' : pct < -1 ? 'down' : 'flat';
+   const arrow = pct > 1 ? '↑' : pct < -1 ? '↓' : '→';
+   deltaHTML = `<div class="hero-delta ${cls}">${arrow} ${Math.abs(pct).toFixed(0)}% spending vs ${monthLabel(prevKey).split(' ')[0]}</div>`;
+ }
 
-  // daily trend for chart
-  const daysInMonth = {};
-  thisMonthRows.forEach(r => {
-    const dk = r.date.getDate();
-    daysInMonth[dk] = (daysInMonth[dk]||0) + r.amount;
-  });
-  const [yy,mm] = selectedMonthKey.split('-').map(Number);
-  const numDays = new Date(yy, mm, 0).getDate();
-  const chartLabels = []; const chartData = [];
-  for(let d=1; d<=numDays; d++){ chartLabels.push(d); chartData.push(daysInMonth[d] || 0); }
 
-  // filtered transactions (includes investment rows — they're just excluded from spend totals above)
-  let filteredRows = thisMonthAll;
-  if(selectedCategory) filteredRows = filteredRows.filter(r => r.category === selectedCategory);
-  if(searchQuery) filteredRows = filteredRows.filter(r =>
-    r.note.toLowerCase().includes(searchQuery) || r.category.toLowerCase().includes(searchQuery)
-  );
-  filteredRows = [...filteredRows].sort((a,b)=>b.date-a.date);
+ // average monthly spend, investment excluded, used as ring fallback when no budget is set
+ const allMonthTotals = monthKeys.map(k => months[k].filter(r => r.category.toLowerCase() !== INVESTMENT_KEY).reduce((s,r)=>s+r.amount,0));
+ const avgMonthly = allMonthTotals.reduce((a,b)=>a+b,0) / allMonthTotals.length;
+ const ringBase = (monthlyBudget && monthlyBudget > 0) ? monthlyBudget : avgMonthly;
+ const ringPct = ringBase > 0 ? Math.min(thisTotal / ringBase, 1) : 0;
 
-  // group by day for list
-  const grouped = {};
-  filteredRows.forEach(r => {
-    const key = r.date.toDateString();
-    grouped[key] = grouped[key] || [];
-    grouped[key].push(r);
-  });
 
-  content.innerHTML = `
-    <div class="pillrow">
-      ${monthKeys.map(k => `<div class="pill ${k===selectedMonthKey?'active':''}" data-month="${k}">${monthLabel(k)}</div>`).join('')}
-    </div>
+ // categories for selected month
+ const catTotals = {};
+ thisMonthRows.forEach(r => { catTotals[r.category] = (catTotals[r.category]||0) + r.amount; });
+ const catList = Object.entries(catTotals).sort((a,b)=>b[1]-a[1]);
+ const maxCat = catList.length ? catList[0][1] : 1;
 
-    <div class="hero">
-      <div class="hero-ring">
-        ${ringSVG(ringPct)}
-      </div>
-      <div class="hero-text">
-        <div class="hero-label">Total in ${monthLabel(selectedMonthKey).split(' ')[0]}</div>
-        <div class="hero-amount num">${fmtINR(grandTotal)}</div>
-        ${investTotal > 0 ? `<div class="hero-breakdown">Spending ${fmtINR(thisTotal)} · <span class="bd-invest">Investment ${fmtINR(investTotal)}</span></div>` : ''}
-        ${deltaHTML}
-      </div>
-    </div>
 
-    ${budgetBarHTML(thisTotal)}
+ // methods for selected month
+ const methodTotals = {};
+ thisMonthRows.forEach(r => { methodTotals[r.method] = (methodTotals[r.method]||0) + r.amount; });
+ const methodList = Object.entries(methodTotals).sort((a,b)=>b[1]-a[1]);
+ const maxMethod = methodList.length ? methodList[0][1] : 1;
 
-    ${thisInvestRows.length > 0 ? `
-    <div class="section" style="margin-top:0;">
-      <h2>Investments</h2>
-      <div class="investcard">
-        <div>
-          <div class="invest-label">Set aside this month</div>
-          <div class="invest-amt num">${fmtINR(investTotal)}</div>
-        </div>
-        <div class="invest-count">${thisInvestRows.length} txn${thisInvestRows.length!==1?'s':''}</div>
-      </div>
-    </div>` : ''}
 
-    <div class="statrow">
-      <div class="stat">
-        <div class="stat-label">Transactions</div>
-        <div class="stat-value num">${thisMonthRows.length}</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Avg / transaction</div>
-        <div class="stat-value num">${fmtINR(thisMonthRows.length ? thisTotal/thisMonthRows.length : 0)}</div>
-      </div>
-    </div>
+ // filtered transactions (includes investment rows — they're just excluded from spend totals above)
+ let filteredRows = thisMonthAll;
+ if(selectedCategory) filteredRows = filteredRows.filter(r => r.category === selectedCategory);
+ if(searchQuery) filteredRows = filteredRows.filter(r =>
+   r.note.toLowerCase().includes(searchQuery) || r.category.toLowerCase().includes(searchQuery)
+ );
+ filteredRows = [...filteredRows].sort((a,b)=>b.date-a.date);
 
-    <div class="section">
-      <h2>Categories</h2>
-      <div class="catstrip">
-        ${catList.map(([cat, amt]) => `
-          <div class="catcard ${selectedCategory===cat?'active':''}" data-cat="${cat}">
-            <div class="catdot" style="background:${colorForCategory(cat)}" onclick="event.stopPropagation(); openColorPicker('${cat.replace(/'/g,"\\'")}')"></div>
-            <div class="catname">${cat}</div>
-            <div class="catamt num">${fmtINR(amt)}</div>
-            <div class="catbar"><div class="catbar-fill" style="width:${(amt/maxCat*100).toFixed(0)}%; background:${colorForCategory(cat)}"></div></div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
 
-    <div class="section">
-      <h2>Daily trend</h2>
-      <div class="chartwrap" id="chartWrap">${trendChartSVG(chartLabels, chartData)}</div>
-    </div>
+ // group by day for list
+ const grouped = {};
+ filteredRows.forEach(r => {
+   const key = r.date.toDateString();
+   grouped[key] = grouped[key] || [];
+   grouped[key].push(r);
+ });
 
-    <div class="section">
-      <h2>Payment methods</h2>
-      <div class="methodrow">
-        ${methodList.map(([m, amt]) => `
-          <div class="method-item">
-            <div class="method-name">${m}</div>
-            <div class="method-track"><div class="method-fill" style="width:${(amt/maxMethod*100).toFixed(0)}%"></div></div>
-            <div class="method-amt num">${fmtINR(amt)}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
 
-    <div class="section">
-      <h2>Transactions</h2>
-      <div class="searchbar">
-        <input type="text" id="searchInput" placeholder="Search notes or category" value="${searchQuery}">
-      </div>
-      ${Object.keys(grouped).length === 0 ? '<div class="empty">No matching transactions.</div>' :
-        Object.entries(grouped).map(([dateStr, items]) => `
-          <div class="daygroup">
-            <div class="daylabel">${dayLabel(new Date(dateStr))}</div>
-            ${items.map(r => `
-              <div class="txn">
-                <div class="txn-dot" style="background:${colorForCategory(r.category)}"></div>
-                <div class="txn-main">
-                  <div class="txn-note">${r.note || r.category}</div>
-                  <div class="txn-sub">${r.category} · ${r.method}</div>
-                </div>
-                <div class="txn-amt num">${fmtINR(r.amount)}</div>
-              </div>
-            `).join('')}
-          </div>
-        `).join('')
-      }
-    </div>
-  `;
+ content.innerHTML = `
+   <div class="pillrow">
+     ${monthKeys.map(k => `<div class="pill ${k===selectedMonthKey?'active':''}" data-month="${k}">${monthLabel(k)}</div>`).join('')}
+   </div>
 
-  // wire up interactions
-  document.querySelectorAll('.pill').forEach(el => el.addEventListener('click', () => {
-    selectedMonthKey = el.dataset.month; selectedCategory = null; render();
-  }));
-  document.querySelectorAll('.catcard').forEach(el => el.addEventListener('click', () => {
-    const cat = el.dataset.cat;
-    selectedCategory = selectedCategory === cat ? null : cat;
-    render();
-  }));
-  const searchInput = document.getElementById('searchInput');
-  if(searchInput){
-    searchInput.addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); render(); });
-    searchInput.focus({preventScroll:true});
-    searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
-  }
+
+   <div class="hero">
+     <div class="hero-chips">
+       <div class="hero-chip">
+         <div class="chip-icon" style="background:${hexToRgba('#B23A48',0.14)}">
+           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B23A48" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10M17 17H8"/></svg>
+         </div>
+         <div>
+           <div class="chip-label">Spending</div>
+           <div class="chip-amt num">${fmtINR(thisTotal)}</div>
+         </div>
+       </div>
+       <div class="hero-chip">
+         <div class="chip-icon" style="background:${hexToRgba('#3A5A78',0.14)}">
+           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3A5A78" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
+         </div>
+         <div>
+           <div class="chip-label">Investment</div>
+           <div class="chip-amt num">${fmtINR(investTotal)}</div>
+         </div>
+       </div>
+     </div>
+     <div class="hero-ring-wrap">
+       ${heroRingSVG(ringPct, grandTotal, monthlyBudget ? `${Math.round(ringPct*100)}% of budget` : `in ${monthLabel(selectedMonthKey).split(' ')[0]}`)}
+     </div>
+     ${deltaHTML}
+   </div>
+
+
+   ${budgetBarHTML(thisTotal)}
+
+
+   ${thisInvestRows.length > 0 ? `
+   <div class="section" style="margin-top:0;">
+     <h2>Investments</h2>
+     <div class="investcard">
+       <div>
+         <div class="invest-label">Set aside this month</div>
+         <div class="invest-amt num">${fmtINR(investTotal)}</div>
+       </div>
+       <div class="invest-count">${thisInvestRows.length} txn${thisInvestRows.length!==1?'s':''}</div>
+     </div>
+   </div>` : ''}
+
+
+   <div class="statrow">
+     <div class="stat">
+       <div class="stat-label">Transactions</div>
+       <div class="stat-value num">${thisMonthRows.length}</div>
+     </div>
+     <div class="stat">
+       <div class="stat-label">Avg / transaction</div>
+       <div class="stat-value num">${fmtINR(thisMonthRows.length ? thisTotal/thisMonthRows.length : 0)}</div>
+     </div>
+   </div>
+
+
+   <div class="section">
+     <h2>Categories</h2>
+     <div class="donutwrap">
+       <div class="donutchart">${donutSVG(catList, thisTotal)}</div>
+       <div class="catlegend">
+         ${catList.map(([cat, amt]) => `
+           <div class="catrow ${selectedCategory===cat?'active':''}" data-cat="${cat}">
+             <div class="catrow-badge" style="background:${hexToRgba(colorForCategory(cat),0.16)}" onclick="event.stopPropagation(); openColorPicker('${cat.replace(/'/g,"\\'")}')">
+               ${txnIconInner(colorForCategory(cat))}
+             </div>
+             <div class="catrow-main">
+               <div class="catrow-name">${cat}</div>
+               <div class="catrow-track"><div class="catrow-fill" style="width:${(amt/maxCat*100).toFixed(0)}%; background:${colorForCategory(cat)}"></div></div>
+             </div>
+             <div class="catrow-amt num">${fmtINR(amt)}</div>
+           </div>
+         `).join('')}
+       </div>
+     </div>
+   </div>
+
+
+   <div class="section">
+     <h2>Payment methods</h2>
+     <div class="methodrow">
+       ${methodList.map(([m, amt]) => `
+         <div class="method-item">
+           <div class="method-name">${m}</div>
+           <div class="method-track"><div class="method-fill" style="width:${(amt/maxMethod*100).toFixed(0)}%"></div></div>
+           <div class="method-amt num">${fmtINR(amt)}</div>
+         </div>
+       `).join('')}
+     </div>
+   </div>
+
+
+   <div class="section">
+     <h2>Transactions</h2>
+     <div class="searchbar">
+       <input type="text" id="searchInput" placeholder="Search notes or category" value="${searchQuery}">
+     </div>
+     ${Object.keys(grouped).length === 0 ? '<div class="empty">No matching transactions.</div>' :
+       Object.entries(grouped).map(([dateStr, items]) => `
+         <div class="daygroup">
+           <div class="daylabel">${dayLabel(new Date(dateStr))}</div>
+           ${items.map(r => `
+             <div class="txn">
+               ${txnBadge(r.category, r.category.toLowerCase()==='investment')}
+               <div class="txn-main">
+                 <div class="txn-note">${r.note || r.category}</div>
+                 <div class="txn-sub">${r.category} · ${r.method}</div>
+               </div>
+               <div class="txn-amt num">${fmtINR(r.amount)}</div>
+             </div>
+           `).join('')}
+         </div>
+       `).join('')
+     }
+   </div>
+ `;
+
+
+ // wire up interactions
+ document.querySelectorAll('.pill').forEach(el => el.addEventListener('click', () => {
+   selectedMonthKey = el.dataset.month; selectedCategory = null; render();
+ }));
+ document.querySelectorAll('.catrow').forEach(el => el.addEventListener('click', () => {
+   const cat = el.dataset.cat;
+   selectedCategory = selectedCategory === cat ? null : cat;
+   render();
+ }));
+ const searchInput = document.getElementById('searchInput');
+ if(searchInput){
+   searchInput.addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); render(); });
+   searchInput.focus({preventScroll:true});
+   searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
+ }
+
 
 }
+
 
 function budgetBarHTML(spendTotal){
-  if(monthlyBudget && monthlyBudget > 0){
-    const remaining = monthlyBudget - spendTotal;
-    const pct = Math.min(spendTotal/monthlyBudget, 1) * 100;
-    const over = remaining < 0;
-    return `<div class="budgetbar">
-      <div class="budgetbar-top">
-        <span>Budget ${fmtINR(monthlyBudget)}</span>
-        <button class="editbtn" onclick="promptBudget()">Edit</button>
-      </div>
-      <div class="budgetbar-track"><div class="budgetbar-fill ${over?'over':''}" style="width:${pct.toFixed(0)}%"></div></div>
-      <div class="budgetbar-sub ${over?'over':''}">${over ? fmtINR(Math.abs(remaining)) + ' over budget' : fmtINR(remaining) + ' left this month'}</div>
-    </div>`;
-  }
-  return `<div class="budgetbar">
-    <div class="nobudget-row"><button class="setbudgetbtn" onclick="promptBudget()">+ Set a monthly budget</button></div>
-  </div>`;
+ if(monthlyBudget && monthlyBudget > 0){
+   const remaining = monthlyBudget - spendTotal;
+   const pct = Math.min(spendTotal/monthlyBudget, 1) * 100;
+   const over = remaining < 0;
+   return `<div class="budgetbar">
+     <div class="budgetbar-top">
+       <span>Budget ${fmtINR(monthlyBudget)}</span>
+       <button class="editbtn" onclick="promptBudget()">Edit</button>
+     </div>
+     <div class="budgetbar-track"><div class="budgetbar-fill ${over?'over':''}" style="width:${pct.toFixed(0)}%"></div></div>
+     <div class="budgetbar-sub ${over?'over':''}">${over ? fmtINR(Math.abs(remaining)) + ' over budget' : fmtINR(remaining) + ' left this month'}</div>
+   </div>`;
+ }
+ return `<div class="budgetbar">
+   <div class="nobudget-row"><button class="setbudgetbtn" onclick="promptBudget()">+ Set a monthly budget</button></div>
+ </div>`;
 }
+
 
 async function promptBudget(){
-  const val = window.prompt('Set your monthly budget (₹)', monthlyBudget || '');
-  if(val === null) return;
-  const num = parseFloat(val);
-  if(isNaN(num) || num <= 0){ alert('Please enter a valid number.'); return; }
-  monthlyBudget = num;
-  try{ localStorage.setItem('monthlyBudget', JSON.stringify(num)); }catch(e){ /* non-fatal */ }
-  render();
+ const val = window.prompt('Set your monthly budget (₹)', monthlyBudget || '');
+ if(val === null) return;
+ const num = parseFloat(val);
+ if(isNaN(num) || num <= 0){ alert('Please enter a valid number.'); return; }
+ monthlyBudget = num;
+ try{ localStorage.setItem('monthlyBudget', JSON.stringify(num)); }catch(e){ /* non-fatal */ }
+ render();
 }
+
 
 function loadBudget(){
-  try{
-    const val = localStorage.getItem('monthlyBudget');
-    monthlyBudget = val ? JSON.parse(val) : null;
-  }catch(e){
-    monthlyBudget = null;
-  }
+ try{
+   const val = localStorage.getItem('monthlyBudget');
+   monthlyBudget = val ? JSON.parse(val) : null;
+ }catch(e){
+   monthlyBudget = null;
+ }
 }
 
-function ringSVG(pct){
-  const r = 30, c = 2*Math.PI*r, offset = c * (1-pct);
-  const overBudget = pct >= 1;
-  return `
-  <svg width="72" height="72" viewBox="0 0 72 72">
-    <circle cx="36" cy="36" r="${r}" fill="none" stroke="var(--accent-soft)" stroke-width="7"/>
-    <circle cx="36" cy="36" r="${r}" fill="none" stroke="${overBudget ? 'var(--danger)' : 'var(--accent)'}" stroke-width="7"
-      stroke-dasharray="${c}" stroke-dashoffset="${offset}" stroke-linecap="round" transform="rotate(-90 36 36)"/>
-    <text x="36" y="40" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">${Math.round(pct*100)}%</text>
-  </svg>`;
+
+function hexToRgba(hex, alpha){
+ const h = hex.replace('#','');
+ const r = parseInt(h.substring(0,2),16), g = parseInt(h.substring(2,4),16), b = parseInt(h.substring(4,6),16);
+ return `rgba(${r},${g},${b},${alpha})`;
 }
 
-function trendChartSVG(labels, data){
-  const W = 480, H = 170, padL = 34, padR = 8, padT = 10, padB = 20;
-  const plotW = W - padL - padR, plotH = H - padT - padB;
-  const maxVal = Math.max(...data, 1);
-  const n = data.length;
-  const gap = 3;
-  const barW = Math.max((plotW / n) - gap, 1.5);
 
-  // y-axis gridlines (0, mid, max)
-  const gridVals = [0, maxVal/2, maxVal];
-  const gridLines = gridVals.map(v => {
-    const y = padT + plotH - (v/maxVal)*plotH;
-    return `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" stroke="#EAE7DE" stroke-width="1"/>
-            <text x="${padL-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="8" fill="#8E8E93">₹${Math.round(v)}</text>`;
-  }).join('');
-
-  const bars = data.map((v,i) => {
-    const x = padL + i*(plotW/n) + gap/2;
-    const h = maxVal > 0 ? (v/maxVal)*plotH : 0;
-    const y = padT + plotH - h;
-    const showLabel = n <= 15 || i % Math.ceil(n/10) === 0;
-    const label = showLabel ? `<text x="${(x+barW/2).toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="8" fill="#8E8E93">${labels[i]}</text>` : '';
-    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${Math.max(h,0).toFixed(1)}" rx="2" fill="#1B4332">
-              <title>${labels[i]}: ${fmtINR(v)}</title>
-            </rect>${label}`;
-  }).join('');
-
-  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:170px;" preserveAspectRatio="none">${gridLines}${bars}</svg>`;
+function heroRingSVG(pct, grandTotal, captionLine){
+ const size = 200, r = 78, sw = 15, c = 2*Math.PI*r, offset = c*(1-pct);
+ const overBudget = pct >= 1;
+ return `
+ <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+   <circle cx="100" cy="100" r="${r}" fill="none" stroke="var(--accent-soft)" stroke-width="${sw}"/>
+   <circle cx="100" cy="100" r="${r}" fill="none" stroke="${overBudget ? 'var(--danger)' : 'var(--accent)'}" stroke-width="${sw}"
+     stroke-dasharray="${c}" stroke-dashoffset="${offset}" stroke-linecap="round" transform="rotate(-90 100 100)"/>
+   <text x="100" y="90" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--muted)" style="text-transform:uppercase">TOTAL SPENT</text>
+   <text x="100" y="118" text-anchor="middle" font-size="27" font-weight="800" fill="var(--ink)">${fmtINR(grandTotal)}</text>
+   <text x="100" y="138" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--muted)">${captionLine}</text>
+ </svg>`;
 }
+
+
+function donutSVG(catList, totalSpend){
+ const size = 176, r = 62, sw = 24, c = 2*Math.PI*r;
+ let cumulative = 0;
+ const segments = catList.map(([cat, amt]) => {
+   const frac = totalSpend > 0 ? amt/totalSpend : 0;
+   const len = frac * c;
+   const dashoffset = -cumulative;
+   cumulative += len;
+   return `<circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${colorForCategory(cat)}" stroke-width="${sw}"
+     stroke-dasharray="${len} ${c-len}" stroke-dashoffset="${dashoffset}" transform="rotate(-90 ${size/2} ${size/2})"/>`;
+ }).join('');
+ return `
+ <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+   <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--border)" stroke-width="${sw}"/>
+   ${segments}
+   <text x="${size/2}" y="${size/2-8}" text-anchor="middle" font-size="10" font-weight="700" letter-spacing="0.4" fill="var(--muted)" style="text-transform:uppercase">TOTAL SPEND</text>
+   <text x="${size/2}" y="${size/2+14}" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)">${fmtINR(totalSpend)}</text>
+ </svg>`;
+}
+
+
+function txnIconInner(color){
+ return `<div style="width:8px; height:8px; border-radius:50%; background:${color}"></div>`;
+}
+
+
+function txnBadge(cat, isInvestment){
+ const color = colorForCategory(cat);
+ const bg = hexToRgba(color, 0.16);
+ const arrow = isInvestment
+   ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>`
+   : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7v10M17 17H8"/></svg>`;
+ return `<div class="txn-badge" style="background:${bg}">${arrow}</div>`;
+}
+
 
 async function refreshData(){
-  const btn = document.getElementById('refreshBtn');
-  btn.textContent = 'Refreshing…';
-  try{
-    const [data] = await Promise.all([loadData(), loadBudget(), loadCategoryColors()]);
-    rawRows = parseRows(data);
-    render();
-    btn.textContent = 'Updated just now';
-  }catch(e){
-    btn.textContent = 'Tap to retry';
-    document.getElementById('content').innerHTML = `<div class="errbox">Couldn't load your data: ${e.message}. Check your connection and tap "Tap to retry" above.</div>`;
-  }
+ const btn = document.getElementById('refreshBtn');
+ btn.textContent = 'Refreshing…';
+ try{
+   const [data] = await Promise.all([loadData(), loadBudget(), loadCategoryColors()]);
+   rawRows = parseRows(data);
+   render();
+   btn.textContent = 'Updated just now';
+ }catch(e){
+   btn.textContent = 'Tap to retry';
+   document.getElementById('content').innerHTML = `<div class="errbox">Couldn't load your data: ${e.message}. Check your connection and tap "Tap to retry" above.</div>`;
+ }
 }
+
 
 refreshData();
 </script>
 </body>
 </html>
+
 
